@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+          crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!--Colocar el viewport - ajusta la vista al tamaño de pantalla del dispositivo -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8"> <!-- formato de codificación de caracteres, para interpretar los símbolos/carácteres -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+    <script
+            src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+    <title th:text="${titulo}">titulo</title>
+</head>
+<body background="/fondo.jpg">
+<div class="container">
+
+    <div class="card">
+        <div class="card-body">
+            <a class="nav-link" href="#" th:href="@{/}"> <i class="fa fa-home" style="font-size: 40px;" ></i>  </a>
+            <h5 class="card-title" th:text="${titulo}"
+                style="text-align: center;">Card title</h5>
+
+            <table class="table">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Numero</th>
+                    <th scope="col">Cliente</th>
+                    <th scope="col">Anulado</th>
+                    <th scope="col">Fecha</th>
+                    <th scope="col">Total</th>
+                    <th scope="col">(ver)</th>
+                    <th scope="col">(elim)</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                <th:block th:each="encabezado : ${data.content}">
+
+                    <tr>
+                        <th th:text="${encabezado.getId()}">1</th>
+                        <td th:text="${encabezado.getNumero()}">23</td>
+                        <td th:text="${encabezado.getCliente().getNombre()}">Otto</td>
+                        <td th:text="${encabezado.getAnulado()}">true</td>
+                        <td th:text="${encabezado.getFecha()}">05/05</td>
+                        <td th:text="${encabezado.getPie().getTotal()}">$muchodinero</td>
+                        <td style="width:5%"><a th:href="@{/facturas/infoFactura.html(id=${encabezado.id})}" class="btn btn-success"> <i class="fa fa-search" style="color: white" title="Ver"></i> </a></td>
+                        <td style="width:5%"><a href="" class="btn btn-danger"> <i class="fa fa-trash-o" style="color: white" title="Borrar"></i> </a></td>
+                    </tr>
+
+                </th:block>
+                </tbody>
+            </table>
+
+            <nav th:if="${data.totalPages > 0}" aria-label="navigation">
+                <ul class="pagination justify-content-center">
+
+                    <th:block th:if="${data.hasPrevious()}">
+                        <li class="page-item"><a class="page-link"
+                                                 th:href="@{/facturas/index.html(size=${data.size},page=${data.number})}"
+                                                 href="#"> <span aria-hidden="true">&laquo;</span> Anterior
+                        </a></li>
+                    </th:block>
+
+                    <th:block th:each="pageNumber : ${pageNumbers}">
+                        <li th:if="${data.number+1 == pageNumber}"
+                            class="page-item active"><span class="page-link"
+                                                           th:text=${pageNumber}>#</span></li>
+                        <li th:unless="${data.number+1 == pageNumber}"
+                            class="page-item"><a class="page-link"
+                                                 th:href="@{/facturas/index.html(size=${data.size}, page=${pageNumber})}"
+                                                 th:text=${pageNumber} href="#">1</a></li>
+                    </th:block>
+
+                    </th:block>
+                    <th:block th:if="${data.hasNext()}">
+                        <li class="page-item"><a class="page-link"
+                                                 th:href="@{/facturas/index.html(size=${data.size},page=${data.number+2})}"
+                                                 href="#" aria-label="Siguiente"> Siguiente <span aria-hidden="true">&raquo;</span></a></li>
+                    </th:block>
+
+                </ul>
+            </nav>
+
+        </div>
+    </div>
+    <div>
+        <a href="/clientes/index.html" class="btn btn-info">Ver Clientes Faturables</a>
+    </div>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script
+        src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script
+        src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+</body>
+</html>

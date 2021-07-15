@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html th:lang="es" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+          crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css"href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <style>
+        body{
+            background-image: url("/fondo.jpg");
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+    </style>
+    <script type="javascript">
+        /*
+        $(document).ready(function() {
+            $('.cantidad').on("keyup change", function() {
+                actualizar_totales();
+            });
+        });
+
+        //var [[${elsubtotal}]] = 0.00;
+
+        void function actualizar() {
+            var precio = document.getElementById("precio");
+            var cantidad = document.getElementById("cantidad");
+            var subtotal = (precio * cantidad);
+            if (subtotal > 0){
+                document.getElementById("subtotal").value = subtotal;
+            }else{
+                document.getElementById("subtotal").value = 0.0;
+            }
+        }
+
+        function actualizar_totales() {
+            var sum = 0.0;
+            $('#latabla > tbody  > tr').each(function() {
+                var precio = parseFloat($(this).find('.precio').val());
+                var cantidad = parseFloat($(this).find('.cantidad').val());
+                var subtotal = (cantidad * precio);
+                if (subtotal > 0) {
+                    $(this).find('.subtotal').val(subtotal);
+                    [[${elsubtotal}]] = subtotal;
+                    document.getElementById("subtotal").value = subtotal;
+                    sum = sum + subtotal;
+                    console.log("subtotal: " + subtotal);
+                    console.log("El subtotal: " + [[${elsubtotal}]]);
+                    console.log("sum: " + sum);
+                } else {
+                    $(this).find('.subtotal').val("0.00");
+                }
+            });
+            if (sum > 0) $('.totalpedido').val(sum);
+            else $('.totalpedido').val("0.00");
+        }
+        */
+    </script>
+</head>
+<body>
+
+    <form class="jumbotron" method="post" style="margin-top: 20px; padding-top: 20px;margin-left: 20px;padding-left: 20px;margin-right: 20px;padding-right: 20px;padding-bottom: 20px;margin-bottom: 20px;" th:action="@{/facturas/registrar}" th:object="${encabezado}">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-4 pull-left" style="left: auto; align-self: auto">
+                    <table>
+                        <tr>
+                            <th>Empresa:</th> <td th:text="${empresa.getNombre()}">Otto</td>
+                        </tr>
+                        <tr>
+                            <th>Direccion:</th> <td th:text="${empresa.getDireccion()}">Otto</td>
+                        </tr>
+                        <tr>
+                            <th>CUIT:</th> <td th:text="${empresa.getCuit()}">Von</td>
+                        </tr>
+                        <tr>
+                            <th>Cod. Postal:</th> <td th:text="${empresa.getCodigo_postal()}">Von</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="col-xs-4 pull-right" style="margin-left: 600px;margin-right: 0px;">
+                    <table>
+                        <tr>
+                            <th>Cliente: </th><td th:text="${cliente.getNombre()}">Otto</td>
+                        </tr>
+                        <tr>
+                            <th>Direccion: </th><td th:text="${cliente.getDireccion()}">Otto</td>
+                        </tr>
+                        <tr>
+                            <th>CUIT: </th><td th:text="${cliente.getCuit()}">Von</td>
+                        </tr>
+                        <tr>
+                            <th>Código: </th><td th:text="${cliente.getCodigo()}">Von</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="row">
+                <table class="table-responsive latabla" id="latabla">
+                    <thead class="thead-dark">Items añadidos</thead>
+                    <tr>
+                        <td>Producto 1</td>
+                        <td>Ingrese cantidad: </td>
+                        <td>Precio producto </td>
+                        <td>Sub-total:</td>
+                    </tr>
+                    <th:block th:each="item : ${items}">
+                        <tr>
+                            <td th:value="${item.getProducto().getNombre()}"></td>
+                            <td th:value="${item.getCantidad()}">cantidad: </td>
+                            <td th:value="${item.getPrecioUnitario()}">Precio </td>
+                            <td th:value="${item.getSubTotal()}">Sub-total:</td>
+                        </tr>
+                    </th:block>
+                </table>
+            </div>
+        </div>
+
+    </form>
+
+    <form method="post" name="add_item" th:action="@{/facturas/agregar.html}" th:object="${item}" style="background-color: lightgrey">
+        <input type="hidden" id="idCliente" th:field="${cliente.id}">
+
+        <h4>Agregar producto a la lista:</h4>
+        <div class="container justify-content-center">
+            <nav class="navbar nav navbar-nav">
+                <div th:if="${not #lists.isEmpty(productos)}">
+                    <div class="form-group">
+                        <label for="select_producto">Seleccione un producto: </label>
+                        <select class="form-control" id="select_producto">
+                            <th:block th:each="producto : ${productos}">
+                                <option th:text="${producto.getNombre()}" th:value="${producto}">1</option>
+                            </th:block>
+                        </select>
+                        <label for="cantidad">Ingrese cantidad: </label>
+                        <input type="number" name="cantidad" id="cantidad">
+                        <label for="precio">Ingrese precio: </label>
+                        <input type="number" name="precio" id="precio">
+                    </div>
+                </div>
+                <div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-md btn-block">Agregar</button>
+            </nav>
+        </div>
+    </form>
+
+</div>
+
+</div>
+
+</body>
+</html>

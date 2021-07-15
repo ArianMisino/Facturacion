@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Green Bees: Wellcome</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+          crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<!--Colocar el viewport - ajusta la vista al tamaño de pantalla del dispositivo -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8"> <!-- formato de codificación de caracteres, para interpretar los símbolos/carácteres -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <!-- scripts que sirven para agregar/controlar las funcionalidades de la página: botones, modales, navbars, alertas... -->
+    <style> /* CSS */
+    .dropdown-submenu {
+        position: relative;
+    }
+    .dropdown-submenu .dropdown-menu {
+        top: 0;
+        left: 100%;
+        margin-top: -1px;
+    }
+    .map-responsive{
+        overflow:hidden;
+        padding-bottom:56.25%;
+        position:relative;
+        height:0;
+    }
+    .map-responsive iframe{
+        left:0;
+        top:0;
+        height:100%;
+        width:100%;
+        position:absolute;
+    }
+    body{
+        background-attachment: fixed;
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+    <script
+            src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+</head>
+<body background="/fondo.jpg">
+    <div class="modal-body" style="text-align:center;">
+        <div style="" class="row col-xl">
+            <div class="jumbotron col-xl" style="color: #8fbc8f;margin-top: 50px;padding-top: 35px;padding-left: 15px;margin-left: 80px;margin-right: 80px;">
+                <p>hola desde thymeleaf</p>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm">
+                            <a class="btn btn-primary" href="#" th:href="@{/clientes/index.html}" role="button" style="padding-left: 1.3rem;padding-right: 1.3rem;">Cliente</a>
+                        </div>
+                        <div class="col-sm">
+                            <a class="btn btn-warning" href="#" th:href="@{/empresas/index.html}" role="button">Empresa</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="row" style="padding-bottom: 2px;padding-top: 2px;margin-top: 3px;margin-bottom: 3px;"> </div>
+                </div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm">
+                            <a class="btn btn-info" href="#" th:href="@{/productos/index.html}" role="button">Producto</a>
+                        </div>
+                        <div class="col-sm">
+                            <a class="btn btn-success" href="#" th:href="@{/facturas/index.html}" role="button">Facturas</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="fixed-bottom section footer-clasic context-dark bg-dark" style="background: rgb(12, 32, 5);">
+        <div class="mw9 center ph6 ph7-l pv5 flex flex-column flex-row-l flex-wrap flex-nowrap-l items-center justify-center justify-between-l">
+            <div class="d-flex bd-highlight align-items-center">
+                <div class="mr-auto p-2 bd-highlight"><h6 style="color:white;margin-bottom: 0.3rem;margin-top: 0.3rem;">Subo dubstep sin copyright</h6></div>
+
+                <div class=""><a href="https://www.facebook.com/"><i style="color:#3fe839" class="fab fa-facebook-square"></i></a></div>
+
+                <div style="margin-left: 10px"><a href="https://twitter.com/"><i style="color:#3fe839;" class="fab fa-twitter-square"></i></a></div>
+
+                <div style="margin-left: 10px;margin-right: 10px"><a href="https://www.instagram.com/"><i style="color:#3fe839" class="fab fa-instagram"></i></a></div>
+
+                <div style="margin-right: 225px;"> <a href="#worthy" data-toggle="modal"> <i style="color:#3fe839" class="fas fa-play"> </i> </a></div>
+
+                <div style="margin-left: 300px;margin-right: 10px;"> <a class="font-italic" style="color:#42a12a">Augusto Misino - Pablo Fracaro</a> </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
