@@ -10,6 +10,9 @@
 //esto funcaaaaaaaa
 //let precioid = document.getElementById("precio").value;
 //console.log(precioid);
+import Producto from "src/main/java/ar/com/facturacion/dominio/Producto.java";
+let producto = new Producto;
+let prodid = producto;
 
 function demo(){
     alert("Se ha llamado la funcion JavaScript demo con exito");

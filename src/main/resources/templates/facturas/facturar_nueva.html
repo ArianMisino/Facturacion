@@ -13,17 +13,29 @@
     <!-- para agregar archivo de JavaScript src="/./static/js/funciones.js" <script type="text/javascript" th:src="@{/./static/js/funciones.js}"></script> -->
     <script type="text/javascript" th:inline="javascript">
         $(document).ready(function () {
+            var total = 0;
             $('#elboton').on("click",function(){
-                obtener_totales();
-                obtener_producto();
+                let aux = obtener_totales();
+                total = total + aux[2];
+                let product = obtener_producto();
+                crear_tabla(product, aux, total);
             });
         });
         function obtener_producto() {
             let select = document.getElementById("select_producto");
+            /*<![CDATA[*/
+
+            var productoId = /*[[${session.userName}]]*/ 'cosa';
+
+            /*]]>*/
             console.log("con el select: ");
-            //console.log(select);
             console.log("select value: " + select.value);
-            //console.log(select.valueOf());
+            let davalue = select.value;
+            let elproducto =
+            console.log(davalue);
+            let datype = select.value.type;
+            console.log(datype);
+            return select.value;
         }
         function obtener_totales() {
             let precio = document.getElementById("precio").value;
@@ -33,17 +45,25 @@
             let subtotal = precio * cantidad;
             if (subtotal > 0){
                 console.log('el subtotal es ' + subtotal);
+                return [precio, cantidad, subtotal];
             }else {
                 console.log('no mi pana, no hay');
                 console.log(subtotal);
             }
         }
-        function crear_tabla(data){
+        function crear_tabla(product, aux, total){
             var tabla = document.getElementById("latabla");
-            tabla.innerHTML=''
+            console.log("el prod: " + product);
+            console.log("el prod.nombre: " + product.nombre);
+            console.log("el prod[2]: " + product[2]);
+            console.log("el aux-precio: " + aux[0]);
+            console.log("el aux-canti: " + aux[1]);
+            console.log("el aux-subtotal: " + aux[2]);
+            console.log("el total: " + total);
+            /*tabla.innerHTML=''
             for (var i=0; i < data.length; i++){
                 console.log("dentro del for " + i);
-            }
+            }*/
         }
     </script>
 
@@ -125,7 +145,7 @@
                         <select class="form-control" id="select_producto"
                                 th:field="*{producto}">
                             <option th:each="producto : ${productos}"
-                                    th:text="${producto.getNombre()}" th:value="${producto}"
+                                    th:text="${producto.getNombre()}" th:value="${producto.getId()}"
                                     th:selected="${producto} == ${item.producto}"
                                     class="producto" name="producto" id="producto" value="${producto}"
                             >1</option>
