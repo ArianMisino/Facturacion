@@ -115,10 +115,11 @@ public class FacturaControl {
         Cliente cliente = RepoCliente.findById(id).get();
         Empresa empresa = RepoEmpresa.findById((long) 1).get();
         ArrayList<Producto> productos = RepoProducto.findByEstado(1);
-
+        Item item = new Item();
         model.addAttribute("cliente", cliente);
         model.addAttribute("empresa", empresa);
         model.addAttribute("productos", productos);
+        model.addAttribute("item", item);
         return "/facturas/facturar_nueva.html";
     }
 

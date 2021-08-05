@@ -7,8 +7,66 @@
           href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
           crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css"href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <!-- para agregar archivo de JavaScript src="/./static/js/funciones.js" <script type="text/javascript" th:src="@{/./static/js/funciones.js}"></script> -->
+    <script type="text/javascript" th:inline="javascript">
+        $(document).ready(function () {
+            var total = 0;
+            $('#elboton').on("click",function(){
+                let aux = obtener_totales();
+                total = total + aux[2];
+                let product = obtener_producto();
+                crear_tabla(product, aux, total);
+            });
+        });
+        function obtener_producto() {
+            let select = document.getElementById("select_producto");
+            /*<![CDATA[*/
+
+            var productoId = /*[[${session.userName}]]*/ 'cosa';
+
+            /*]]>*/
+            console.log("con el select: ");
+            console.log("select value: " + select.value);
+            let davalue = select.value;
+            let elproducto =
+            console.log(davalue);
+            let datype = select.value.type;
+            console.log(datype);
+            return select.value;
+        }
+        function obtener_totales() {
+            let precio = document.getElementById("precio").value;
+            console.log("el precio: " + precio);
+            let cantidad = document.getElementById("cantidad").value;
+            console.log("la cantidad: " + cantidad);
+            let subtotal = precio * cantidad;
+            if (subtotal > 0){
+                console.log('el subtotal es ' + subtotal);
+                return [precio, cantidad, subtotal];
+            }else {
+                console.log('no mi pana, no hay');
+                console.log(subtotal);
+            }
+        }
+        function crear_tabla(product, aux, total){
+            var tabla = document.getElementById("latabla");
+            console.log("el prod: " + product);
+            console.log("el prod.nombre: " + product.nombre);
+            console.log("el prod[2]: " + product[2]);
+            console.log("el aux-precio: " + aux[0]);
+            console.log("el aux-canti: " + aux[1]);
+            console.log("el aux-subtotal: " + aux[2]);
+            console.log("el total: " + total);
+            /*tabla.innerHTML=''
+            for (var i=0; i < data.length; i++){
+                console.log("dentro del for " + i);
+            }*/
+        }
+    </script>
+
     <style>
         body{
             background-image: url("/fondo.jpg");
@@ -16,50 +74,7 @@
             background-size: cover;
         }
     </style>
-    <script type="javascript">
-        /*
-        $(document).ready(function() {
-            $('.cantidad').on("keyup change", function() {
-                actualizar_totales();
-            });
-        });
 
-        //var [[${elsubtotal}]] = 0.00;
-
-        void function actualizar() {
-            var precio = document.getElementById("precio");
-            var cantidad = document.getElementById("cantidad");
-            var subtotal = (precio * cantidad);
-            if (subtotal > 0){
-                document.getElementById("subtotal").value = subtotal;
-            }else{
-                document.getElementById("subtotal").value = 0.0;
-            }
-        }
-
-        function actualizar_totales() {
-            var sum = 0.0;
-            $('#latabla > tbody  > tr').each(function() {
-                var precio = parseFloat($(this).find('.precio').val());
-                var cantidad = parseFloat($(this).find('.cantidad').val());
-                var subtotal = (cantidad * precio);
-                if (subtotal > 0) {
-                    $(this).find('.subtotal').val(subtotal);
-                    [[${elsubtotal}]] = subtotal;
-                    document.getElementById("subtotal").value = subtotal;
-                    sum = sum + subtotal;
-                    console.log("subtotal: " + subtotal);
-                    console.log("El subtotal: " + [[${elsubtotal}]]);
-                    console.log("sum: " + sum);
-                } else {
-                    $(this).find('.subtotal').val("0.00");
-                }
-            });
-            if (sum > 0) $('.totalpedido').val(sum);
-            else $('.totalpedido').val("0.00");
-        }
-        */
-    </script>
 </head>
 <body>
 
@@ -108,20 +123,47 @@
                         <td>Precio producto </td>
                         <td>Sub-total:</td>
                     </tr>
-                    <th:block th:each="item : ${items}">
-                        <tr>
-                            <td th:value="${item.getProducto().getNombre()}"></td>
-                            <td th:value="${item.getCantidad()}">cantidad: </td>
-                            <td th:value="${item.getPrecioUnitario()}">Precio </td>
-                            <td th:value="${item.getSubTotal()}">Sub-total:</td>
-                        </tr>
-                    </th:block>
+                    <tr>
+                        <td></td>
+                        <td>cantidad: </td>
+                        <td>Precio </td>
+                        <td>Sub-total:</td>
+                    </tr>
                 </table>
             </div>
         </div>
 
     </form>
 
+    <form name="add_item" th:object="${item}" style="background-color: lightgrey">
+        <h4>Agregar producto a la lista:</h4>
+        <div class="container justify-content-center">
+            <nav class="navbar nav navbar-nav">
+                <div th:if="${not #lists.isEmpty(productos)}">
+                    <div class="form-group">
+                        <label for="select_producto">Seleccione un producto: </label>
+                        <select class="form-control" id="select_producto"
+                                th:field="*{producto}">
+                            <option th:each="producto : ${productos}"
+                                    th:text="${producto.getNombre()}" th:value="${producto.getId()}"
+                                    th:selected="${producto} == ${item.producto}"
+                                    class="producto" name="producto" id="producto" value="${producto}"
+                            >1</option>
+                        </select>
+                        <label for="cantidad">Ingrese cantidad: </label>
+                        <input type="number" class="cantidad" name="cantidad" id="cantidad">
+                        <label for="precio">Ingrese precio: </label>
+                        <input type="number" class="precio" name="precio" id="precio">
+                    </div>
+                </div>
+                <div>
+                </div>
+                <button type="button" class="btn btn-primary btn-md btn-block elboton" name="elboton" id="elboton">Agregar</button>
+                <button type="button" onclick="demo()">Alerta Demo</button>
+            </nav>
+        </div>
+    </form>
+    <!--formulario viejo sin JavaScript, solo con Thymeleaf
     <form method="post" name="add_item" th:action="@{/facturas/agregar.html}" th:object="${item}" style="background-color: lightgrey">
         <input type="hidden" id="idCliente" th:field="${cliente.id}">
 
@@ -145,9 +187,10 @@
                 <div>
                 </div>
                 <button type="submit" class="btn btn-primary btn-md btn-block">Agregar</button>
+                <button type="button" onclick="demo()">Alerta Demo</button>
             </nav>
         </div>
-    </form>
+    </form> -->
 
 </div>
 
