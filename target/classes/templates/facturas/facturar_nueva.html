@@ -8,60 +8,9 @@
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
           crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-    <!-- para agregar archivo de JavaScript src="/./static/js/funciones.js" <script type="text/javascript" th:src="@{/./static/js/funciones.js}"></script> -->
-    <script type="text/javascript" th:inline="javascript">
-        $(document).ready(function () {
-            var total = 0;
-            $('#elboton').on("click",function(){
-                let aux = obtener_totales();
-                total = total + aux[2];
-                let product = obtener_producto();
-                crear_tabla(product, aux, total);
-            });
-        });
-        function obtener_producto() {
-            let select = document.getElementById("select_producto");
-            
-            console.log("con el select: ");
-            console.log("select value: " + select.value);
-            let davalue = select.value;
-            let elproducto =
-            console.log(davalue);
-            let datype = select.value.type;
-            console.log(datype);
-            return select.value;
-        }
-        function obtener_totales() {
-            let precio = document.getElementById("precio").value;
-            console.log("el precio: " + precio);
-            let cantidad = document.getElementById("cantidad").value;
-            console.log("la cantidad: " + cantidad);
-            let subtotal = precio * cantidad;
-            if (subtotal > 0){
-                console.log('el subtotal es ' + subtotal);
-                return [precio, cantidad, subtotal];
-            }else {
-                console.log('no mi pana, no hay');
-                console.log(subtotal);
-            }
-        }
-        function crear_tabla(product, aux, total){
-            var tabla = document.getElementById("latabla");
-            console.log("el prod: " + product);
-            console.log("el prod.nombre: " + product.nombre);
-            console.log("el prod[2]: " + product[2]);
-            console.log("el aux-precio: " + aux[0]);
-            console.log("el aux-canti: " + aux[1]);
-            console.log("el aux-subtotal: " + aux[2]);
-            console.log("el total: " + total);
-            /*tabla.innerHTML=''
-            for (var i=0; i < data.length; i++){
-                console.log("dentro del for " + i);
-            }*/
-        }
-    </script>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/css/bootstrap-select.min.css"/>
 
     <style>
         body{
@@ -73,12 +22,17 @@
 
 </head>
 <body>
-
+    <div>
+        <a class="nav-link" href="#" th:href="@{/}"> <i class="fa fa-home" style="font-size: 40px;" ></i>  </a>
+    </div>
+    <div class="col-sm">
+        <a class="btn btn-success" href="#" th:href="@{/facturas/index.html}" role="button">Volver a Facturas</a>
+    </div>
     <form class="jumbotron" method="post" style="margin-top: 20px; padding-top: 20px;margin-left: 20px;padding-left: 20px;margin-right: 20px;padding-right: 20px;padding-bottom: 20px;margin-bottom: 20px;" th:action="@{/facturas/registrar}" th:object="${encabezado}">
         <div class="container">
             <div class="row">
-                <div class="col-xs-4 pull-left" style="left: auto; align-self: auto">
-                    <table>
+                <div class="col-xs-4 pull-left table-responsive" style="left: auto; align-self: auto">
+                    <table class="table">
                         <tr>
                             <th>Empresa:</th> <td th:text="${empresa.getNombre()}">Otto</td>
                         </tr>
@@ -93,8 +47,8 @@
                         </tr>
                     </table>
                 </div>
-                <div class="col-xs-4 pull-right" style="margin-left: 600px;margin-right: 0px;">
-                    <table>
+                <div class="col-xs-4 pull-right table-responsive" style="margin-left: 600px;margin-right: 0px;">
+                    <table class="table">
                         <tr>
                             <th>Cliente: </th><td th:text="${cliente.getNombre()}">Otto</td>
                         </tr>
@@ -110,21 +64,14 @@
                     </table>
                 </div>
             </div>
-            <div class="row">
-                <table class="table-responsive latabla" id="latabla">
+            <div class="row table-responsive">
+                <table class="table table-striped latabla" id="latabla">
                     <thead class="thead-dark">Items añadidos</thead>
                     <tr>
-                        <td>Producto 1</td>
-                        <td>Ingrese cantidad: </td>
-                        <td>Precio producto </td>
-                        <td>Sub-total:</td>
+                        <th>Producto</th><th>Cantidad:</th><th>Precio</th><th>Sub-total:</th>
                     </tr>
-                    <tr>
-                        <td></td>
-                        <td>cantidad: </td>
-                        <td>Precio </td>
-                        <td>Sub-total:</td>
-                    </tr>
+                    <tbody id="eltbody"></tbody>
+                    <tfoot><th>El total es: </th> <th id="el-total"></th> </tfoot>
                 </table>
             </div>
         </div>
@@ -136,12 +83,12 @@
         <div class="container justify-content-center">
             <nav class="navbar nav navbar-nav">
                 <div th:if="${not #lists.isEmpty(productos)}">
-                    <div class="form-group">
+                    <div class="form-group row-fluid">
                         <label for="select_producto">Seleccione un producto: </label>
-                        <select class="form-control" id="select_producto"
-                                th:field="*{producto}">
+                        <select class="form-control selectpicker" id="select_producto"
+                                th:field="*{producto}" data-live-search="true">
                             <option th:each="producto : ${productos}"
-                                    th:text="${producto.getNombre()}" th:value="${producto.getId()}"
+                                    th:text="${producto.getNombre()}" th:value="${producto.getNombre()}"
                                     th:selected="${producto} == ${item.producto}"
                                     class="producto" name="producto" id="producto" value="${producto}"
                             >1</option>
@@ -159,38 +106,70 @@
             </nav>
         </div>
     </form>
-    <!--formulario viejo sin JavaScript, solo con Thymeleaf
-    <form method="post" name="add_item" th:action="@{/facturas/agregar.html}" th:object="${item}" style="background-color: lightgrey">
-        <input type="hidden" id="idCliente" th:field="${cliente.id}">
-
-        <h4>Agregar producto a la lista:</h4>
-        <div class="container justify-content-center">
-            <nav class="navbar nav navbar-nav">
-                <div th:if="${not #lists.isEmpty(productos)}">
-                    <div class="form-group">
-                        <label for="select_producto">Seleccione un producto: </label>
-                        <select class="form-control" id="select_producto">
-                            <th:block th:each="producto : ${productos}">
-                                <option th:text="${producto.getNombre()}" th:value="${producto}">1</option>
-                            </th:block>
-                        </select>
-                        <label for="cantidad">Ingrese cantidad: </label>
-                        <input type="number" name="cantidad" id="cantidad">
-                        <label for="precio">Ingrese precio: </label>
-                        <input type="number" name="precio" id="precio">
-                    </div>
-                </div>
-                <div>
-                </div>
-                <button type="submit" class="btn btn-primary btn-md btn-block">Agregar</button>
-                <button type="button" onclick="demo()">Alerta Demo</button>
-            </nav>
-        </div>
-    </form> -->
 
 </div>
 
 </div>
 
 </body>
+<footer>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/js/bootstrap-select.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+
+    <!-- para agregar archivo de JavaScript src="/./static/js/funciones.js" <script type="text/javascript" th:src="@{/./static/js/funciones.js}"></script> -->
+    <script type="text/javascript" th:inline="javascript">
+        $(document).ready(function () {
+            var total = 0;
+            $('#elboton').on("click",function(){
+                let array1 = [];
+                let array2 = [];
+                array1[0] = obtener_producto();
+                array2 = array1.concat(obtener_totales());
+                total = total + array2[3];
+                crear_tabla(array2);
+                let eltotal = document.getElementById("el-total");
+                eltotal.innerText = total;
+            });
+        });
+        function obtener_producto() {
+            let select = document.getElementById("select_producto");
+            console.log("con el select: ");
+            console.log("select value: " + select.value);
+            return select.value;
+        }
+        function obtener_totales() {
+            let precio = document.getElementById("precio").value;
+            console.log("el precio: " + precio);
+            let cantidad = document.getElementById("cantidad").value;
+            console.log("la cantidad: " + cantidad);
+            let subtotal = precio * cantidad;
+            if (subtotal > 0){
+                console.log('el subtotal es ' + subtotal);
+                return [ cantidad, precio, subtotal];
+            }else {
+                console.log('no mi pana, no hay');
+                console.log(subtotal);
+            }
+        }
+        function crear_tabla(array){
+            console.log("el array: " + array);
+            console.log("el aux-precio: " + array[0]);
+            console.log("el aux-canti: " + array[1]);
+            console.log("el aux-subtotal: " + array[2]);
+            console.log("el prod?: " + array[3]);
+            var tabla = document.getElementById("eltbody");
+            // Insertar nueva fila a la tabla
+            var newRow = tabla.insertRow();
+            for (let i = 0; i < array.length; i++){
+                // Inserta td al final de la fila
+                var newCell = newRow.insertCell();
+                // agrega texto al td
+                var newText = document.createTextNode(array[i]);
+                newCell.appendChild(newText);
+            }
+        }
+    </script>
+</footer>
 </html>
