@@ -11,7 +11,6 @@
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/css/bootstrap-select.min.css"/>
-
     <style>
         body{
             background-image: url("/fondo.jpg");
@@ -19,7 +18,6 @@
             background-size: cover;
         }
     </style>
-
 </head>
 <body>
     <div>
@@ -28,7 +26,8 @@
     <div class="col-sm">
         <a class="btn btn-success" href="#" th:href="@{/facturas/index.html}" role="button">Volver a Facturas</a>
     </div>
-    <form class="jumbotron" method="post" style="margin-top: 20px; padding-top: 20px;margin-left: 20px;padding-left: 20px;margin-right: 20px;padding-right: 20px;padding-bottom: 20px;margin-bottom: 20px;" th:action="@{/facturas/registrar}" th:object="${encabezado}">
+    <form class="jumbotron" method="post" style="margin-top: 20px; padding-top: 20px;margin-left: 20px;padding-left: 20px;margin-right: 20px;padding-right: 20px;padding-bottom: 20px;margin-bottom: 20px;"
+          th:action="@{/facturas/registrar}" th:object="${encabezado}">
         <div class="container">
             <div class="row">
                 <div class="col-xs-4 pull-left table-responsive" style="left: auto; align-self: auto">
@@ -74,8 +73,14 @@
                     <tfoot><th>El total es: </th> <th id="el-total"></th> </tfoot>
                 </table>
             </div>
+            <div class="row">
+                <label for="observaciones">Observaciones: </label>
+                <input id="observaciones" th:id="observaciones">
+            </div>
+            <div>
+                <button type="button">Guardar Factura</button>
+            </div>
         </div>
-
     </form>
 
     <form name="add_item" th:object="${item}" style="background-color: lightgrey">
@@ -164,6 +169,7 @@
                 // agrega texto al td
                 var newText = document.createTextNode(array[i]);
                 newCell.appendChild(newText);
+                document.createAttribute();
             }
         }
     </script>

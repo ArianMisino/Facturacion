@@ -14,6 +14,7 @@ import com.sun.org.apache.xpath.internal.objects.XString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -21,6 +22,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 @Controller
 @RequestMapping("/facturas")
@@ -146,6 +148,5 @@ public class FacturaControl {
         model.addAttribute("productos", productos);
         return "/facturas/facturar_nueva.html";
     }
-
-
+    
 }

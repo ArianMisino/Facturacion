@@ -38,9 +38,10 @@ public class Encabezado implements Serializable {
 	private String letra;
 	@OneToOne
 	private Cliente cliente;
-	@OneToMany(mappedBy = "encabezado")
-	private List<Item> items;
 	private Integer anulado;
+
+	@OneToMany(mappedBy = "encabezado")
+	private List<Item> items; /*no debería estar acá porque ya esta en factura*/
 	@OneToOne(mappedBy = "encabezado")
 	private Pie pie;
 	
