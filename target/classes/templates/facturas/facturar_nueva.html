@@ -26,10 +26,13 @@
     <div class="col-sm">
         <a class="btn btn-success" href="#" th:href="@{/facturas/index.html}" role="button">Volver a Facturas</a>
     </div>
-    <form class="jumbotron" method="post" style="margin-top: 20px; padding-top: 20px;margin-left: 20px;padding-left: 20px;margin-right: 20px;padding-right: 20px;padding-bottom: 20px;margin-bottom: 20px;" th:action="@{/facturas/registrar}" th:object="${encabezado}">
-        <div class="container">
+    <div class="jumbotron" style="margin-top: 20px; padding-top: 20px;margin-left: 20px;padding-left: 20px;margin-right: 20px;padding-right: 20px;padding-bottom: 20px;margin-bottom: 20px;"
+          >
+        <div>
+            <!--
             <div class="row">
                 <div class="col-xs-4 pull-left table-responsive" style="left: auto; align-self: auto">
+
                     <table class="table">
                         <tr>
                             <th>Empresa:</th> <td th:text="${empresa.getNombre()}">Otto</td>
@@ -61,26 +64,48 @@
                         </tr>
                     </table>
                 </div>
-            </div>
-            <div class="row table-responsive">
-                <table class="table table-striped latabla" id="latabla">
-                    <thead class="thead-dark">Items añadidos</thead>
-                    <tr>
-                        <th>Producto</th><th>Cantidad:</th><th>Precio</th><th>Sub-total:</th>
-                    </tr>
-                    <tbody id="eltbody"></tbody>
-                    <tfoot><th>El total es: </th> <th id="el-total"></th> </tfoot>
-                </table>
-            </div>
-            <div class="row">
-                <label for="observaciones">Observaciones: </label>
-                <input id="observaciones" th:id="observaciones">
-            </div>
-            <div>
-                <button type="button">Guardar Factura</button>
-            </div>
+            </div> -->
+            <form method="post" th:action="@{/facturas/registrar}" th:object="${factura}">
+                <div class="container">
+                    <div class="col-xs-4 pull-right table-responsive">
+                        <label for="fechaEncabezado">Fecha: </label>
+                        <input id="fechaEncabezado" type="date" th:field="*{encabezado.fecha}">
+
+                        <label for="numeroEncabezado">Número: </label>
+                        <input id="numeroEncabezado" type="number" th:field="*{encabezado.numero}">
+
+                        <label for="letraEncabezado">Letra: </label>
+                        <input id="letraEncabezado" type="text" th:field="*{encabezado.letra}">
+
+                        <input id="clienteEncabezado" type="hidden" th:value="${cliente}" th:field="*{encabezado.cliente}">
+                        <input id="anuladoEncabezado" type="hidden" th:value="0" value="0" th:field="*{encabezado.anulado}">
+                    </div>
+
+                    <div class="row table-responsive">
+                        <table class="table table-striped latabla" id="latabla" style="table-layout:fixed;width:80%" align="center">
+                            <thead class="thead-dark">
+                                <th>Producto</th><th>Cantidad:</th><th>Precio</th><th>Sub-total:</th>
+                            </thead>
+                            <tbody id="eltbody"></tbody>
+                            <tfoot>
+                                <th> El total es: </th>
+                                <th></th>
+                                <th></th>
+                                <th> <input th:field="*{pie.total}" value="" type="number" id="el-total" readonly> </th>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <div class="row" align="center">
+                        <label for="observaciones">Observaciones: </label>
+                        <input id="observaciones" type="text" th:field="*{pie.observaciones}">
+                    </div>
+                    <div>
+                        <button align="center" type="submit" class="btn btn-primary">Guardar Factura</button>
+                    </div>
+                </div>
+            </form>
         </div>
-    </form>
+    </div>
 
     <form name="add_item" th:object="${item}" style="background-color: lightgrey">
         <h4>Agregar producto a la lista:</h4>
@@ -106,7 +131,7 @@
                 <div>
                 </div>
                 <button type="button" class="btn btn-primary btn-md btn-block elboton" name="elboton" id="elboton">Agregar</button>
-                <button type="button" onclick="demo()">Alerta Demo</button>
+                <button type="button" class="btn btn-primary btn-md btn-block segundo" name="segundo" id="segundo">Segundo agregar</button>
             </nav>
         </div>
     </form>
@@ -117,6 +142,13 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/js/bootstrap-select.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+
+    <script type="text/javascript" th:inline="javascript">
+        /* segundo script de prueba: innerHTML */
+        $(document).ready( function(){
+            let totales = obtener_totales();
+        });
+    </script>
 
     <!-- para agregar archivo de JavaScript src="/./static/js/funciones.js" <script type="text/javascript" th:src="@{/./static/js/funciones.js}"></script> -->
     <script type="text/javascript" th:inline="javascript">
@@ -130,7 +162,7 @@
                 total = total + array2[3];
                 crear_tabla(array2);
                 let eltotal = document.getElementById("el-total");
-                eltotal.innerText = total;
+                eltotal.value = total;
             });
         });
         function obtener_producto() {
@@ -155,10 +187,10 @@
         }
         function crear_tabla(array){
             console.log("el array: " + array);
-            console.log("el aux-precio: " + array[0]);
+            console.log("el aux-nombre: " + array[0]);
             console.log("el aux-canti: " + array[1]);
-            console.log("el aux-subtotal: " + array[2]);
-            console.log("el prod?: " + array[3]);
+            console.log("el aux-precio: " + array[2]);
+            console.log("el aux-subtotal: " + array[3]);
             var tabla = document.getElementById("eltbody");
             // Insertar nueva fila a la tabla
             var newRow = tabla.insertRow();
@@ -168,7 +200,7 @@
                 // agrega texto al td
                 var newText = document.createTextNode(array[i]);
                 newCell.appendChild(newText);
-                document.createAttribute();
+                //document.createAttribute();
             }
         }
     </script>

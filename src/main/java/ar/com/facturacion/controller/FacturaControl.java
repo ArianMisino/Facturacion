@@ -20,6 +20,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -97,27 +98,34 @@ public class FacturaControl {
     }
 
     //esta función debería guardar la factura nueva en la base de datos
-    @PostMapping(value = "/registrar.html")
+    @RequestMapping(value = "/registrar")
     public String registroPost(@Valid Factura factura, Errors errors, Model model){
         if (errors.hasErrors()){
             return "facturas/facturar_nueva";
         }
         model.addAttribute("factura",new Factura());
         model.addAttribute("facturaInfo",factura);
-        if(factura.getEncabezado().getId()==null){
+        if(factura.getId()==null){
             RepoEncabezado.save(factura.getEncabezado());
-            //RepoItem.save(factura.getItems()); //save no puede guardar una lista?
+            //RepoItem.saveAll(factura.getItems());
             RepoPie.save(factura.getPie());
         }
-        return "facturas/facturar_nueva";
+        /*, RedirectAttributes redirectAttrs
+        redirectAttrs
+                .addFlashAttribute("mensaje", "Agregado correctamente")
+                .addFlashAttribute("clase", "success"); */
+        return "facturas/index.html";
     }
+
     //Boton en la lista de cliente que permita generar una factura con dicho cliente
     @GetMapping("/facturar.html") //lleva a la página con el formulario para facturar
     public String facturarCliente(@RequestParam("id") Long id, Model model){
+        Factura factura = new Factura();
         Cliente cliente = RepoCliente.findById(id).get();
         Empresa empresa = RepoEmpresa.findById((long) 1).get();
         ArrayList<Producto> productos = RepoProducto.findByEstado(1);
         Item item = new Item();
+        model.addAttribute("factura", factura);
         model.addAttribute("cliente", cliente);
         model.addAttribute("empresa", empresa);
         model.addAttribute("productos", productos);

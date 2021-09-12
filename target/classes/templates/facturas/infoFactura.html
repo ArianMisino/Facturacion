@@ -26,7 +26,7 @@
     <div class="container-fluid">
         <h5 class="card-title" th:text="${titulo}"
             style="text-align: center;">Card title</h5>
-        <div class="row jumbotron" style="">
+        <div class="row jumbotron" style="padding: 1rem; margin-bottom: 1rem;margin-left: 0px;margin-right: 0px;">
             <th:block th:each="encabezado : ${dataEnca}">
                 <tr>
                     <div class="col-sm"></div>
@@ -35,18 +35,23 @@
                             <h5>ID factura: <th th:text="${encabezado.getId()}">1</th> </h5>
                         </div>
                         <div class="row">
-                            <h6>Fecha: <td th:text="${encabezado.getFecha()}">Mark</td> </h6>
+                            <h5>Fecha: <td th:text="${encabezado.getFecha()}">Mark</td> </h5>
                         </div>
                         <div class="row">
-                            <h6>Numero: <td th:text="${encabezado.getNumero()}">Otto</td> </h6>
+                            <h5>Numero: <td th:text="${encabezado.getNumero()}">Otto</td> </h5>
                         </div>
-                        <div>
-                            <h6>Letra: <td th:text="${encabezado.getLetra()}">Otto</td> </h6>
-                        </div>
+
                     </div>
                     <div class="col-md" style="align-content: center">
-                        <td>Nombre: <td th:text="${encabezado.getCliente().getNombre()}">Von</td> </td>
-                        <td>Anulado: <td th:text="${encabezado.getAnulado()}">Bismark</td> </td>
+                        <div class="row">
+                            <h5>Letra: <td th:text="${encabezado.getLetra()}">Otto</td> </h5>
+                        </div>
+                        <div class="row">
+                            <h5>Nombre: <td th:text="${encabezado.getCliente().getNombre()}">Von</td> </h5>
+                        </div>
+                        <div class="row">
+                            <h5>Anulado: <td th:text="${encabezado.getAnulado()}">Bismark</td> </h5>
+                        </div>
                     </div>
                     <div class="col-sm"></div>
                 </tr>
@@ -54,7 +59,7 @@
         </div>
         <div class="row">
             <div class="col-sm"></div>
-            <div class="col-sm-16">
+            <div class="col-sm-16 jumbotron" style="margin-bottom: -1rem">
                 <table class="table table-responsive" style="align-self: center">
                     <h3 style="text-align: center;"> Items </h3>
                     <thead class="thead-dark">
@@ -81,19 +86,20 @@
             </div>
             <div class="col-sm"></div>
         </div>
-        <div class="container-fluid jumbotron" style="text-align: center; align-self: center; align-content: center">
+        <div class="container-fluid jumbotron" style="text-align: center; align-self: center; align-content: center;
+            margin-bottom: 2rem;margin-top: -1rem">
             <th:block th:each="pie : ${dataPie}">
                 <div class="row">
-                    <div class="col-md-2">
+                    <div class="col-md">
                         <h4>Total: <th th:text="${pie.getTotal()}">Von</th></h4>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md">
                         <h4>Observaciones: <td th:text="${pie.getObservaciones()}">Bismark</td> </h4>
                     </div>
                 </div>
             </th:block>
         </div>
-        <div class="container-fluid" style="align-self: center; align-content: center">
+        <div class="container-fluid" style="align-self: center; align-content: center; float: inside">
             <button type="button" class="btn-info btn imprimir" name="imprimir" id="imprimir" >Imprimir PDF</button>
         </div>
     </div>

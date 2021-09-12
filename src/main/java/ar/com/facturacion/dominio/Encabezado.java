@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -31,18 +32,28 @@ public class Encabezado implements Serializable {
 	private static final long serialVersionUID = -3479505724865821556L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	
 	private Long id;
+
+	@NotNull
 	private Date fecha;
+
+	@NotNull
 	private String numero;
+
+	@NotNull
 	private String letra;
+
 	@OneToOne
+	@NotNull
 	private Cliente cliente;
+
+	@NotNull
 	private Integer anulado;
 
+	/*no debería estar acá porque ya esta en factura*/
 	@OneToMany(mappedBy = "encabezado")
-	private List<Item> items; /*no debería estar acá porque ya esta en factura*/
+	private List<Item> items;
 	@OneToOne(mappedBy = "encabezado")
 	private Pie pie;
-	
+
 }
