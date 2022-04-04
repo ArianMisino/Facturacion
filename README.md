@@ -2,4 +2,6 @@
 
 Repositorio utilizado para el proyecto final de la materia Diseño de Sistemas
 
-Por alguna razon el .gitignore no funca
+# TODO:
+- Reparar .gitignore
+- Reparar carga de carrito de compras
